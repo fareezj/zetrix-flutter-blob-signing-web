@@ -58,17 +58,16 @@
                 document.getElementById("accessToken").innerHTML = JSON.stringify(response2.data);
                 axios({
                   method: 'GET',
-                  url: `https://ssivc-api-dev.myegdev.com/api/generate-blob/ZTX3K4mhwB95kRu36sU28PQRAGrABF8cBiz8j`, 
+                  url: `https://ssivc-api-dev.myegdev.com/api/generate-blob/${res.data.address}`, 
                   headers: {
                     'Authorization': "Bearer " + response2.data.data
                   }
                 }).then((response3) => {
                   document.getElementById("status").innerHTML = "Parsing blob results";
-
                   const firstItem = response3.data.message[0];
-
                   const blobId = firstItem.blobId;
                   const blob = firstItem.blob;
+                    
                   document.getElementById("blobId").innerHTML = JSON.stringify(response3.data);
                   document.getElementById("blob").innerHTML = blob;
                   BlobId.postMessage(blobId); 
