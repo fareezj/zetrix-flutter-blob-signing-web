@@ -60,7 +60,7 @@
                   method: 'GET',
                   url: `https://ssivc-api-dev.myegdev.com/api/generate-blob/ZTX3K4mhwB95kRu36sU28PQRAGrABF8cBiz8j`, // Fixed to use template literal
                   headers: {
-                    'Authorization': Bearer + " " + response2.data.data // Assuming response2.data is the token
+                    'Authorization': "Bearer " + response2.data.data // Assuming response2.data is the token
                   }
                 }).then((response3) => {
                   document.getElementById("status").innerHTML = "Parsing blob results";
