@@ -66,7 +66,7 @@
 
                   const blobId = firstItem.blobId;
                   const blob = firstItem.blob;
-                  document.getElementById("blobId").innerHTML = blobId;
+                  document.getElementById("blobId").innerHTML = JSON.stringify(response3.data);
                   document.getElementById("blob").innerHTML = blob;
                   BlobId.postMessage(blobId); 
                   Blob.postMessage(blob); 
