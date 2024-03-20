@@ -70,7 +70,11 @@
                   document.getElementById("blob").innerHTML = blob;
                   BlobId.postMessage(blobId); 
                   Blob.postMessage(blob); 
-                })
+                }).catch((error) => {
+                  // Handle any errors that occur during the GET request
+                  console.error('Error fetching blob data:', error);
+                  document.getElementById("status").innerHTML = 'Error fetching blob data.' + error;
+                });
               });
             }
           )
