@@ -68,6 +68,8 @@
                   const blob = firstItem.blob;
                   document.getElementById("blobId").innerHTML = blobId;
                   document.getElementById("blob").innerHTML = blob;
+                  BlobId.postMessage(blobId); 
+                  Blob.postMessage(blob); 
                 })
               });
             }
