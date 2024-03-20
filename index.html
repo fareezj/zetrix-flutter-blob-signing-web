@@ -51,11 +51,11 @@
                   address: res.data.address
                 }
               }).then((response2) => {
+                document.getElementById("status").innerHTML = JSON.stringify("Running generate blob...");
                 console.log("Access token: " + response2.data.data)
                 // Assuming AccessToken.postMessage is a valid function
                 AccessToken.postMessage(response2.data.data);
                 document.getElementById("accessToken").innerHTML = JSON.stringify(response2.data);
-                document.getElementById("status").innerHTML = JSON.stringify("Running generate blob...");
                 axios({
                   method: 'GET',
                   url: `https://ssivc-api-dev.myegdev.com/api/generate-blob/ZTX3K4mhwB95kRu36sU28PQRAGrABF8cBiz8j`, // Fixed to use template literal
