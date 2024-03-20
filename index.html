@@ -7,6 +7,7 @@
     <span id="blob">Blob</span><br />
     <span id="walletAddress" style="color: black;"></span>
     <span id="accessToken" style="color: black;"></span>
+    <span id="blobSigned" style="color: black;"></span>
     <!-- Moved the spans above to ensure they exist in the DOM when the script tries to access them -->
 
 </body>
@@ -72,6 +73,10 @@
                   document.getElementById("blob").innerHTML = blob;
                   BlobId.postMessage(blobId); 
                   Blob.postMessage(blob); 
+
+                  zetrixConnect.signMessage({ message: blob }).then((signMessage) => {
+                      document.getElementById("blobSigned").innerHTML = "Blob Signed: " + signMessage.data.data.signMessage;
+                  })
                 }).catch((error) => {
                   console.error('Error fetching blob data:', error);
                   document.getElementById("status").innerHTML = JSON.stringify("Error fetching blob data." + error);
