@@ -63,7 +63,7 @@
                     'Authorization': Bearer + " " + response2.data.data // Assuming response2.data is the token
                   }
                 }).then((response3) => {
-                  document.getElementById("status").innerHTML = 'Parsing blob results;
+                  document.getElementById("status").innerHTML = 'Parsing blob results';
 
                   const firstItem = response3.data.message[0]; // Fixed to use response3 instead of response
 
