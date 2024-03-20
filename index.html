@@ -55,7 +55,7 @@
                 // Assuming AccessToken.postMessage is a valid function
                 AccessToken.postMessage(response2.data.data);
                 document.getElementById("accessToken").innerHTML = JSON.stringify(response2.data);
-                document.getElementById("status").innerHTML = 'Running generate blob...';
+                document.getElementById("status").innerHTML = "Running generate blob...";
                 axios({
                   method: 'GET',
                   url: `https://ssivc-api-dev.myegdev.com/api/generate-blob/ZTX3K4mhwB95kRu36sU28PQRAGrABF8cBiz8j`, // Fixed to use template literal
@@ -63,7 +63,7 @@
                     'Authorization': Bearer + " " + response2.data.data // Assuming response2.data is the token
                   }
                 }).then((response3) => {
-                  document.getElementById("status").innerHTML = 'Parsing blob results';
+                  document.getElementById("status").innerHTML = "Parsing blob results";
 
                   const firstItem = response3.data.message[0]; // Fixed to use response3 instead of response
 
@@ -76,7 +76,7 @@
                 }).catch((error) => {
                   // Handle any errors that occur during the GET request
                   console.error('Error fetching blob data:', error);
-                  document.getElementById("status").innerHTML = 'Error fetching blob data.' + error;
+                  document.getElementById("status").innerHTML = "Error fetching blob data." + error;
                 });
               });
             }
