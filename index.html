@@ -32,7 +32,7 @@
         console.log(res);
         axios({
           method: 'POST',
-          url: 'https://ssivc-api-uat.myegdev.com/api/preauth',
+          url: 'https://ssivc-api-dev.myegdev.com/api/preauth',
           data: {
             wallet_address: res.data.address,
             chainId: 2
@@ -42,7 +42,7 @@
             (res2) => {
               axios({
                 method: 'POST',
-                url: 'https://ssivc-api-uat.myegdev.com/api/login',
+                url: 'https://ssivc-api-dev.myegdev.com/api/login',
                 data: {
                   signBlob: res2.data.signData,
                   chainId: 2,
@@ -57,7 +57,7 @@
                 document.getElementById("accessToken").innerHTML = JSON.stringify(response2.data);
                 axios({
                   method: 'GET',
-                  url: `https://ssivc-api-uat.myegdev.com/api/generate-blob/${res.data.address}`, // Fixed to use template literal
+                  url: `https://ssivc-api-dev.myegdev.com/api/generate-blob/${res.data.address}`, // Fixed to use template literal
                   headers: {
                     'Authorization': `Bearer ${response2.data}` // Assuming response2.data is the token
                   }
