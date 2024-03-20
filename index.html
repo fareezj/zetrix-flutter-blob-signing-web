@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <h1>Zetrix Flutter Wallet Integration</h1>
-  <span id="status">No Update</span><br />
-  <span id="blobId">Blob ID</span><br />
-  <span id="blob">Blob</span><br />
-  <span id="accessToken">Access Token</span><br /> <!-- Added -->
-  <span id="test2">Test 2</span><br /> <!-- Added -->
-  <span id="walletAddress" style="color: white;"></span>
+    <h1>Zetrix Flutter Wallet Integration</h1>
+    <span id="status">No Update</span><br />
+    <span id="blobId">Blob ID</span><br />
+    <span id="blob">Blob</span><br />
+    <span id="walletAddress" style="color: white;"></span>
+    <!-- Moved the spans above to ensure they exist in the DOM when the script tries to access them -->
 
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script type="module">
-    import ZetrixWalletConnect from "https://cdn.skypack.dev/zetrix-connect-wallet-sdk@1.1.6";
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="module">
+  import ZetrixWalletConnect from "https://cdn.skypack.dev/zetrix-connect-wallet-sdk@1.1.6";
 
-    var zetrixConnect = new ZetrixWalletConnect({ qrcode: false });
+  var zetrixConnect = new ZetrixWalletConnect({
+    qrcode: false
+  });
 
-    zetrixConnect.connect().then((res) => {
-      document.getElementById("status").innerHTML = JSON.stringify("WS Connected");
-      test();
-    });
+  zetrixConnect.connect().then((res) => {
+    document.getElementById("status").innerHTML = JSON.stringify("WS Connected");
+    test();
+  });
 
-    const test = () => {
-      zetrixConnect
-        .auth()
-        .then((res) => {
-          document.getElementById("walletAddress").innerHTML = res.data.address;
-          Flutter.postMessage(res.data.address);
-          console.log(res);
-          axios({
-            method: 'POST',
-            url: 'https://ssivc-api-uat.myegdev.com/api/preauth',
-            data: {
-              wallet_address: res.data.address,
-              chainId: 2
-            }
-          }).then((response) => {
-            zetrixConnect.signMessage({ message: response.data.data.signMessage }).then((res2) => {
+  const test = () => {
+    zetrixConnect
+      .auth()
+      .then((res) => {
+        document.getElementById("walletAddress").innerHTML = res.data.address;
+        // Fetch wallet address
+        Flutter.postMessage(res.data.address);
+        console.log(res);
+        axios({
+          method: 'POST',
+          url: 'https://ssivc-api-uat.myegdev.com/api/preauth',
+          data: {
+            wallet_address: res.data.address,
+            chainId: 2
+          }
+        }).then((response) => {
+          zetrixConnect.signMessage({ message: response.data.data.signMessage }).then(
+            (res2) => {
               axios({
                 method: 'POST',
                 url: 'https://ssivc-api-uat.myegdev.com/api/login',
@@ -47,29 +51,36 @@
                   address: res.data.address
                 }
               }).then((response2) => {
-                console.log("Access token: ", response2.data);
+                console.log("Access token: " + response2.data)
+                // Assuming AccessToken.postMessage is a valid function
                 AccessToken.postMessage(response2.data.data);
-                document.getElementById("accessToken").innerHTML = JSON.stringify(response2.data.data);
+                document.getElementById("accessToken").innerHTML = JSON.stringify(response2.data);
                 axios({
                   method: 'GET',
-                  url: `https://ssivc-api-uat.myegdev.com/api/generate-blob/${res.data.address}`, // Fixed template literal
+                  url: `https://ssivc-api-uat.myegdev.com/api/generate-blob/${res.data.address}`, // Fixed to use template literal
                   headers: {
-                    'Authorization': `Bearer ${response2.data.data.token}` // Assuming token is the correct property
+                    'Authorization': `Bearer ${response2.data}` // Assuming response2.data is the token
                   }
                 }).then((response3) => {
-                  // Assuming response3.data.message is an array and contains the data you need
-                  const blobData = response3.data.message[0];
-                  document.getElementById("blobId").innerHTML = blobData.blobId;
-                  document.getElementById("blob").innerHTML = blobData.blob;
-                }).catch((error) => {
-                  console.error("Error in the blob generation request: ", error);
-                });
-              }).catch((error) => {
-                console.error("Error in the login request: ", error);
+                  const firstItem = response3.data.message[0]; // Fixed to use response3 instead of response
+
+                  const blobId = firstItem.blobId;
+                  const blob = firstItem.blob;
+                  document.getElementById("blobId").innerHTML = blobId;
+                  document.getElementById("blob").innerHTML = blob;
+                })
               });
-            }).catch((error) => {
-              console.error("Error in the signMessage request: ", error);
-            });
-          }).catch((error) => {
-            console.error("Error in the preauth request: ", error);
-          });
+            }
+          )
+        });
+
+      })
+      .catch((e) => {
+        console.log(e);
+        document.getElementById("test2").innerHTML = JSON.stringify(e); // Ensure there is an element with id "test2" in your HTML
+      });
+  };
+
+  // setTimeout(test, 1000); // Uncomment if you want to delay the execution
+</script>
+</html>
