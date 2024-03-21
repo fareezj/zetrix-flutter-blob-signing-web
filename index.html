@@ -76,7 +76,7 @@
                   zetrixConnect.signMessage({ message: blob }).then((signMessage) => {
                       document.getElementById("blobSigned").innerHTML = "Blob Signed: " + signMessage.data.signData;
                       BlobId.postMessage(blobId); 
-                      Blob.postMessage(blob); 
+                      BlobSigned.postMessage(signMessage.data.signData); 
                   })
                 }).catch((error) => {
                   console.error('Error fetching blob data:', error);
